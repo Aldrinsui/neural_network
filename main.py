@@ -7,8 +7,14 @@ for line in sys.stdin:
     if not line:
         continue
 
-    x = float(line)
+    x_csv,w_csv,b= line.split(";")
 
-    sigmoid = 1/(1+math.exp(-x))
+    x = [float(v) for v in x_csv.split(",")]
+    w = [float(v) for v in w_csv.split(",")]
+    b = float(b)
+
+    z = sum(wi * xi for wi , xi in zip(w,x))+b
+
+    sigmoid = 1/(1+math.exp(-z))
 
     print(f"{sigmoid:.4f}")
