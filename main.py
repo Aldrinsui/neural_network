@@ -1,18 +1,18 @@
 import sys
 import math 
 
-line = [line.strip() for line in sys.stdin if  line.strip()]
+lines = [line.strip() for line in sys.stdin if line.strip()]
 
-x = [ float(v) for v in line[0].replace("INPUT","").split(",")]
-WEIGHTS = [float(v) for v in line[1].replace("WEIGHTS","").split(",")]
-BIAS = [float(v) for v in line[2].replace("BIAS","").split(",")]
-M,N = map(int,line[3].split()[2:])
-output =[]
-for i in range(M):
-    row = WEIGHTS[i *N:(i+1)*N]
-    z = sum(wi * xi for wi , xi in zip(row, x ))
-    z += BIAS[i]
-    result = 1/(1+math.exp(-z))
-    output.append(f"{result:.4f}")
+pred = [float(v) for v  in lines[0].replace("PRED ","").split(",")]
+true =[float(v) for v in lines[1].replace("TRUE ","").split(",")]
 
-print(",".join(output))
+squared_errors = []
+
+for p,t in zip(pred,true):
+    error = p - t
+    squared_error = error * error
+    squared_errors.append(squared_error)
+
+mse = sum(squared_errors)/len(squared_errors)
+
+print(f"{mse:.4f}")
