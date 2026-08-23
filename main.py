@@ -3,11 +3,18 @@ import math
 
 lines = [line.strip() for line in sys.stdin if line.strip()]
 
-for line in lines:
-    x = float(line)
+LR = float(lines[0].replace("LR","").strip())
+WEIGHTS=[
+    float(v) for v in lines[1].replace("WEIGHTS","").split(',')
+]
+GRADS=[
+    float(v) for v in lines[2].replace("GRADS","").split(',')
+]
 
-    s = 1 / (1 + math.exp(-x))
+NEW_WEIGHT =[]
 
-    derivative = s * (1 - s)
+for w,g in zip(WEIGHTS,GRADS):
+    phew_weight = w - LR * g
+    NEW_WEIGHT.append(phew_weight)
 
-    print(f"{derivative:.4f}")
+print(",".join(f"{w:.4f}" for w in NEW_WEIGHT))
