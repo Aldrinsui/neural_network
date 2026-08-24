@@ -1,27 +1,20 @@
 import sys
+import math
 
 lines = [line.strip() for line in sys.stdin if line.strip()]
 
-pred = [
-    float(v) for v in lines[0].replace("PRED","").strip().split(',')
+LR = float(lines[0].replace("LR","").strip())
+WEIGHTS=[
+    float(v) for v in lines[1].replace("WEIGHTS","").split(',')
+]
+GRADS=[
+    float(v) for v in lines[2].replace("GRADS","").split(',')
 ]
 
-true =[
-    int(v) for v in lines[1].replace("TRUE","").strip().split(',')
-]
+NEW_WEIGHT =[]
 
-k = int(
-    lines[2].replace("K","").strip()
-)
+for w,g in zip(WEIGHTS,GRADS):
+    phew_weight = w - LR * g
+    NEW_WEIGHT.append(phew_weight)
 
-correct = 0
-
-for i in range(len(true)):
-    row = pred[i *k : (1+i)* k ]
-    pred_class = row.index(max(row))
-    if pred_class == true[i]:
-        correct += 1
-
-accuracy = correct/len(true)
-
-print(f"{accuracy:.4f}")
+print(",".join(f"{w:.4f}" for w in NEW_WEIGHT))
